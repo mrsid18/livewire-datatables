@@ -71,6 +71,7 @@ class LivewireDatatable extends Component
 
     //custom variable
     public $export_condition = 'sample';
+    public $export_filename = 'DataTableExport';
 
     public $tablePrefix = '';
 
@@ -265,6 +266,7 @@ class LivewireDatatable extends Component
             'buttonsSlot',
             'afterTableSlot',
             'export_condition',
+            'export_filename',
         ] as $property) {
             $this->$property = $this->$property ?? $$property;
         }
@@ -1728,12 +1730,13 @@ class LivewireDatatable extends Component
         return view('datatables::datatable')->layoutData(['title' => $this->title]);
     }
 
-    public function export(string $filename = 'DatatableExport.xlsx')
+    public function export()
     {
         $this->forgetComputed();
 
         $export = new DatatableExport($this->getExportResultsSet());
-        $export->setFilename($filename);
+        $this->export_filename += ".xlsx";
+        $export->setFilename($this->export_filename);
 
         return $export->download();
     }
@@ -1746,8 +1749,9 @@ class LivewireDatatable extends Component
             })->get(),
             true
         )->map(function ($item) {
+            dd($item);
             return collect($this->columns())->reject(function ($value, $key) {
-                return $value->preventExport == true || $value->hidden == true;
+                return $value->preventExport == true;
             })->mapWithKeys(function ($value, $key) use ($item) {
                 return [$value->label ?? $value->name => $item->{$value->name}];
             })->all();
