@@ -1735,7 +1735,7 @@ class LivewireDatatable extends Component
         $this->forgetComputed();
 
         $export = new DatatableExport($this->getExportResultsSet());
-        $this->export_filename += ".xlsx";
+        $this->export_filename .= ".xlsx";
         $export->setFilename($this->export_filename);
 
         return $export->download();
@@ -1749,7 +1749,6 @@ class LivewireDatatable extends Component
             })->get(),
             true
         )->map(function ($item) {
-            dd($item);
             return collect($this->columns())->reject(function ($value, $key) {
                 return $value->preventExport == true;
             })->mapWithKeys(function ($value, $key) use ($item) {
