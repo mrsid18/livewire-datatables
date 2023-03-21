@@ -1747,7 +1747,7 @@ class LivewireDatatable extends Component
             true
         )->map(function ($item) {
             return collect($this->columns())->reject(function ($value, $key) {
-                return $value->preventExport == true || $value->hidden == true;
+                return $value->preventExport == true;
             })->mapWithKeys(function ($value, $key) use ($item) {
                 return [$value->label ?? $value->name => $item->{$value->name}];
             })->all();
