@@ -1,13 +1,13 @@
-<div class="flex justify-between">
+<div class="flex justify-between gap-2">
 <!-- Previous Page Link -->
 @if ($paginator->onFirstPage())
-<div class="w-32 flex justify-between items-center relative px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-400 bg-gray-50">
-    <x-icons.arrow-left />
+<div class="rounded-md px-2.5 py-1.5 text-xs uppercase font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 inline-flex items-center gap-x-1.5 text-gray-400 bg-gray-50 select-none">
+    <x-icons.arrow-left class="!w-4" />
     {{ __('Previous')}}
 </div>
 @else
-<button wire:click="previousPage" id="pagination-mobile-page-previous" class="w-32 flex justify-between items-center relative px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
-    <x-icons.arrow-left />
+<button wire:click="previousPage" id="pagination-mobile-page-previous" class="rounded-md bg-white px-2.5 py-1.5 text-xs uppercase font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:ring-green-500 hover:bg-green-500 hover:text-white inline-flex items-center gap-x-1.5">
+    <x-icons.arrow-left class="!w-4"/>
     {{ __('Previous')}}
 </button>
 @endif
@@ -15,14 +15,14 @@
 
 <!-- Next Page pnk -->
 @if ($paginator->hasMorePages())
-<button wire:click="nextPage" id="pagination-mobile-page-next" class="w-32 flex justify-between items-center relative items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+<button wire:click="nextPage" id="pagination-mobile-page-next" class="rounded-md bg-white px-2.5 py-1.5 text-xs uppercase font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:ring-green-500 hover:bg-green-500 hover:text-white inline-flex items-center gap-x-1.5">
     {{ __('Next')}}
-    <x-icons.arrow-right />
+    <x-icons.arrow-right class="!w-4" />
 </button>
 @else
-<div class="w-32 flex justify-between items-center relative px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-400 bg-gray-50">
+<div class="rounded-md px-2.5 py-1.5 text-xs uppercase font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 inline-flex items-center gap-x-1.5 text-gray-400 bg-gray-50 select-none">
     {{ __('Next')}}
-    <x-icons.arrow-right class="inline" />
+    <x-icons.arrow-right class="inline !w-4" />
 </div>
 @endif
 </div>
