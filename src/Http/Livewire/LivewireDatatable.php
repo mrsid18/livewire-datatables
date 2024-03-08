@@ -1693,6 +1693,11 @@ class LivewireDatatable extends Component
             : $value;
     }
 
+    public function getDisplayValueForSelectFilter($index, $value)
+    {
+        return $this->freshColumns[$index]['filterable'][$value] ?? $value;
+    }
+
     /*  This can be called to apply highlighting of the search term to some string.
      *  Motivation: Call this from your Column::Callback to apply highlight to a chosen section of the result.
      */
@@ -1950,6 +1955,7 @@ class LivewireDatatable extends Component
 
     private function setVisibleSelected()
     {
+        return;
         $this->visibleSelected = array_intersect($this->getQuery()->get()->pluck('checkbox_attribute')->toArray(), $this->selected);
         $this->visibleSelected = array_map('strval', $this->visibleSelected);
     }

@@ -13,10 +13,8 @@
                     <option value="{{ $label->id }}">{{ $label->name }}</option>
                 @elseif(is_array($label))
                     <option value="{{ $label['id'] }}">{{ $label['name'] }}</option>
-                @elseif(is_numeric($value))
-                    <option value="{{ $label }}">{{ $label }}</option>
                 @else
-                    <option value="{{ $value }}">{{ $label }}</option>
+                    <option value="{{$value}}">{{ $label }}</option>
                 @endif
             @endforeach
         </select>
@@ -26,7 +24,7 @@
         @foreach($this->activeSelectFilters[$index] ?? [] as $key => $value)
         <button wire:click="removeSelectFilter('{{ $index }}', '{{ $key }}')" x-on:click="$refs.select.value=''"
             class="m-1 pl-1 flex items-center uppercase tracking-wide bg-gray-300 text-white hover:bg-red-600 rounded-full focus:outline-none text-xs space-x-1">
-            <span>{{ $this->getDisplayValue($index, $value) }}</span>
+            <span>{{ $this->getDisplayValueForSelectFilter($index, $value) }}</span>
             <x-icons.x-circle />
         </button>
         @endforeach
