@@ -39,6 +39,7 @@ class Column
     public $minWidth;
     public $maxWidth;
     public $exportCallback;
+    public $aggregate;
 
     /**
      * @var bool should the sum of all summarizable cells in this column be
