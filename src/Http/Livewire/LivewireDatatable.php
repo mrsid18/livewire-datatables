@@ -19,6 +19,8 @@ use Mediconesystems\LivewireDatatables\Exports\DatatableExport;
 use Mediconesystems\LivewireDatatables\Traits\WithCallbacks;
 use Mediconesystems\LivewireDatatables\Traits\WithPresetDateFilters;
 use Mediconesystems\LivewireDatatables\Traits\WithPresetTimeFilters;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Auth;
 
 class LivewireDatatable extends Component
 {
@@ -282,9 +284,9 @@ class LivewireDatatable extends Component
         $this->initialiseSearch();
         $this->initialiseSort();
         $this->initialiseHiddenColumns();
+        $this->initialisePerPage();
         $this->initialiseDefaultFilters();
         $this->initialiseFilters();
-        $this->initialisePerPage();
         $this->initialiseColumnGroups();
         $this->model = $this->model ?: get_class($this->builder()->getModel());
 
@@ -505,6 +507,11 @@ class LivewireDatatable extends Component
         return $columns;
     }
 
+    public function getCacheKey()
+    {
+        return $this->sessionStorageKey() . Auth::user()->id;
+    }
+
     public function sessionStorageKey()
     {
         return Str::snake(Str::afterLast(get_called_class(), '\\')) . $this->name;
@@ -526,7 +533,9 @@ class LivewireDatatable extends Component
             return;
         }
 
-        $this->perPage = session()->get($this->sessionStorageKey() . $this->name . '_perpage', $this->perPage);
+        $cacheKey = $this->getCacheKey() . '_perpage';
+
+        $this->perPage = Cache::get($cacheKey, $this->perPage);
     }
 
     public function setSessionStoredSort()
@@ -569,7 +578,9 @@ class LivewireDatatable extends Component
 
         $hidden = collect($this->columns)->filter->hidden->keys()->toArray();
 
-        session()->put([$this->sessionStorageKey() . $this->name . '_hidden_columns' => $hidden]);
+        $cacheKey = $this->getCacheKey() . '_hidden_columns';
+
+        Cache::put($cacheKey, $hidden);
     }
 
     public function initialiseSearch()
@@ -599,9 +610,11 @@ class LivewireDatatable extends Component
             return;
         }
 
-        if (session()->has($this->sessionStorageKey() . '_hidden_columns')) {
-            $this->columns = collect($this->columns)->map(function ($column, $index) {
-                $column['hidden'] = in_array($index, session()->get($this->sessionStorageKey() . '_hidden_columns'));
+        $cacheKey = $this->getCacheKey() . '_hidden_columns';
+
+        if (Cache::has($cacheKey)) {
+            $this->columns = collect($this->columns)->map(function ($column, $index) use ($cacheKey) {
+                $column['hidden'] = in_array($index, Cache::get($cacheKey, []));
 
                 return $column;
             })->toArray();
@@ -1752,7 +1765,9 @@ class LivewireDatatable extends Component
         $this->emit('refreshDynamic');
 
         if ($this->persistPerPage) {
-            session()->put([$this->sessionStorageKey() . '_perpage' => $this->perPage]);
+            $cacheKey = $this->getCacheKey() . '_perpage';
+
+            Cache::put($cacheKey, $this->perPage);
         }
 
         return view('datatables::datatable')->layoutData(['title' => $this->title]);
