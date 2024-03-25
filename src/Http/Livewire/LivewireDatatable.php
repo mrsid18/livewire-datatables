@@ -149,7 +149,7 @@ class LivewireDatatable extends Component
      * This events allows to control the options of the datatable from foreign livewire components
      * by using $emit.
      *
-     * @example $this->emit('applyToTable', ['perPage' => 25]); // in any other livewire component on the same page
+     * @example $this->dispatch('applyToTable', ['perPage' => 25]); // in any other livewire component on the same page
      */
     public function applyToTable($options)
     {
@@ -300,7 +300,7 @@ class LivewireDatatable extends Component
             session()->put($this->sessionStorageKey() . '_search', $this->search);
         }
 
-        return parent::dehydrate(); // @phpstan-ignore-line
+        // return parent::dehydrate(); // @phpstan-ignore-line
     }
 
     public function columns()
@@ -1040,7 +1040,7 @@ class LivewireDatatable extends Component
         $this->setPage(1);
         $this->setSessionStoredFilters();
 
-        $this->emitTo('complex-query', 'resetQuery');
+        $this->dispatchTo('complex-query', 'resetQuery');
     }
 
     public function removeBooleanFilter($column)
@@ -1749,7 +1749,7 @@ class LivewireDatatable extends Component
 
     public function render()
     {
-        $this->emit('refreshDynamic');
+        $this->dispatch('refreshDynamic');
 
         if ($this->persistPerPage) {
             session()->put([$this->sessionStorageKey() . '_perpage' => $this->perPage]);
