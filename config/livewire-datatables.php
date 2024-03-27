@@ -15,6 +15,8 @@ return [
     'default_date_format' => 'd/m/Y',
     'default_datetime_format' => 'd/m/Y H:i',
 
+    'export_limit' => 10000,
+
     /*
     |--------------------------------------------------------------------------
     | Default Carbon Formats

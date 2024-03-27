@@ -21,6 +21,7 @@ use Mediconesystems\LivewireDatatables\Traits\WithPresetDateFilters;
 use Mediconesystems\LivewireDatatables\Traits\WithPresetTimeFilters;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
+use Mediconesystems\LivewireDatatables\Exports\DatatableExportFromQuery;
 
 class LivewireDatatable extends Component
 {
@@ -1778,6 +1779,27 @@ class LivewireDatatable extends Component
         $this->forgetComputed();
 
         $export = new DatatableExport($this->getExportResultsSetFromQuery());
+        $export->setFilename($filename);
+
+        return $export->download();
+    }
+
+    public function fastExport(string $filename = 'DatatableExport.xlsx')
+    {
+        $query = $this->getQuery(true);
+
+        $rowCount = $query->count();
+        if ($rowCount > config('livewire-datatables.export_limit', 10000)) {
+            $this->dispatchBrowserEvent('notify', [
+                'type' => 'error',
+                'content' => 'The export limit is ' . config('livewire-datatables.export_limit', 10000) . ' rows. Please apply filters to reduce the number of rows.',
+            ]);
+            return;
+        }
+
+        $headings = array_keys((array) $query->first());
+
+        $export = new DatatableExportFromQuery($query, $headings);
         $export->setFilename($filename);
 
         return $export->download();
