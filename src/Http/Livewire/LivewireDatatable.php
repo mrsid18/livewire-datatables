@@ -76,6 +76,7 @@ class LivewireDatatable extends Component
     public $export_condition = 'sample';
     public $showComplexButton = false;
     public $paginationType = 'simple'; // simple or numeric
+    public $exportFileName = 'DatatableExport.xlsx';
 
     public $tablePrefix = '';
 
@@ -1784,7 +1785,7 @@ class LivewireDatatable extends Component
         return $export->download();
     }
 
-    public function fastExport(string $filename = 'DatatableExport.xlsx')
+    public function fastExport()
     {
         $query = $this->getQuery(true);
 
@@ -1800,7 +1801,7 @@ class LivewireDatatable extends Component
         $headings = array_keys((array) $query->first());
 
         $export = new DatatableExportFromQuery($query, $headings);
-        $export->setFilename($filename);
+        $export->setFilename($this->exportFileName);
 
         return $export->download();
     }
