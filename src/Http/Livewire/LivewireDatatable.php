@@ -229,11 +229,12 @@ class LivewireDatatable extends Component
         }
     }
 
-    public function updatedSearch()
-    {
-        $this->visibleSelected = ($this->search) ? array_intersect($this->getQuery()->get()->pluck('checkbox_attribute')->toArray(), $this->selected) : $this->selected;
-        $this->setPage(1);
-    }
+    // public function updatedSearch()
+    // {
+    //     $this->visibleSelected = ($this->search) ? array_intersect($this->getQuery()->get()->pluck('checkbox_attribute')->toArray(), $this->selected) : $this->selected;
+    //     $this->setPage(1);
+    // }
+    // Removed for now, as it is not used and causes double queries while searching
 
     public function mount(
         $model = false,

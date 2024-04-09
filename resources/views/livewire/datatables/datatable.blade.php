@@ -121,7 +121,7 @@
         @endif
 
         <div wire:loading.class="opacity-50"
-            class="rounded-md mt-6 @unless ($complex || $this->hidePagination) rounded-b-none @endunless shadow-md bg-white max-w-screen overflow-x-scroll @if ($complex) rounded-b-none border-b-0 @endif">
+            class="rounded-md mt-5 @unless ($complex || $this->hidePagination) rounded-b-none @endunless shadow-md bg-white max-w-screen overflow-x-scroll @if ($complex) rounded-b-none border-b-0 @endif">
             <div>
                 <div class="table min-w-full align-middle">
                     @unless ($this->hideHeader)
